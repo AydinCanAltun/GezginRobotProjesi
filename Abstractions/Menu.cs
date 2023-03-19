@@ -1,7 +1,6 @@
-using prolab21.Entity;
-using prolab21.Helpers;
+using GezginRobotProjesi.Entity;
 
-namespace prolab21.Abstractions
+namespace GezginRobotProjesi.Abstractions
 {
     public abstract class Menu
     {

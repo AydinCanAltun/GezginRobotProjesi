@@ -1,4 +1,4 @@
-namespace prolab21.Entity.Enums
+namespace GezginRobotProjesi.Entity.Enums
 {
     public enum BlockType
     {

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using prolab21.Entity;
-using prolab21.Entity.Enums;
+using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Entity.Enums;
+using GezginRobotProjesi.Helpers;
 
-namespace prolab21.Helpers
+namespace GezginRobotProjesi.Helpers
 {
     public static class MazeHelper
     {
@@ -121,6 +122,26 @@ namespace prolab21.Helpers
                 obstacles.AddRange(obstacleColumn);
             }
             return obstacles;
+        }
+
+        public static List<List<Block>> SetMap(int width, int height){
+            List<List<Block>> map = new List<List<Block>>();
+            for(int i=0; i<width; i++) {
+                List<Block> column = new List<Block>();
+                for(int j=0; j<height; j++) {
+                    Coordinate position = new Coordinate(i, j);
+                    BlockType type = BlockType.Basic;
+                    column.Add(new Block(position, type, false, false));
+                }
+                map.Add(column);
+            }
+            return SetStartingPointAsCell(map);
+        }
+
+        private static List<List<Block>> SetStartingPointAsCell(List<List<Block>> map){
+            Random r = new Random();
+            Corners startingPoint = r.GetEnumValue<Corners>();
+            return map;
         }
     }
 }

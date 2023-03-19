@@ -1,6 +1,6 @@
-﻿using prolab21;
-using prolab21.Entity;
-using prolab21.Entity.Enums;
+﻿using GezginRobotProjesi;
+using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Entity.Enums;
 Console.WriteLine("URL 1 MAP");
 Response<List<List<Block>>> map = await Maze.CreateMap(Constant.MapUrls[0]);
 if(map.IsSuccess){

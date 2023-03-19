@@ -1,8 +1,7 @@
-using prolab21.Entity;
-using prolab21.Entity.Enums;
-using prolab21.Helpers;
+using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Helpers;
 
-namespace prolab21 {
+namespace GezginRobotProjesi {
     public static class Maze {
         /// <summary>
         /// Verilen URL'deki metni okur ve 2d blok array'ine çevirir.
@@ -37,6 +36,8 @@ namespace prolab21 {
                 map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği 20-100 arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", width, height);
                 return map;
             }
+            map.Result = MazeHelper.SetMap(width, height);
+
             return map;
         }
     }

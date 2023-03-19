@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GezginRobotProjesi
 {
-    public class Application
+    public class ConsoleMap
     {
         
     }

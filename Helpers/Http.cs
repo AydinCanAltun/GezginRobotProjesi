@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using prolab21.Entity;
+using GezginRobotProjesi.Entity;
 
-namespace prolab21.Helpers
+namespace GezginRobotProjesi.Helpers
 {
     public class Http
     {

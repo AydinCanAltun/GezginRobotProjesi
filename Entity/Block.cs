@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using prolab21.Entity.Enums;
+using GezginRobotProjesi.Entity.Enums;
 
-namespace prolab21.Entity
+namespace GezginRobotProjesi.Entity
 {
     public class Block
     {

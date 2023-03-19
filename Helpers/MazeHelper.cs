@@ -49,30 +49,13 @@ namespace prolab21.Helpers
             List<Coordinate> visited = new List<Coordinate>();
             int obstacleLen = obstacles.Count;
             for(int i=0; i<obstacleLen; i++) {
-                int currentX = obstacles[i].Position.X;
-                int currentY = obstacles[i].Position.Y;
                 if(visited.Any(v => v.X == obstacles[i].Position.X && v.Y == obstacles[i].Position.Y)){
                     continue;
                 }
                 Random r = new Random();
                 int movebleBlockCount = r.Next(1, 4);
-                int maxX = 0;
-                int maxY = 0;
-                List<Coordinate> gonnaBeVisited = new List<Coordinate>();
-                if(obstacles[i].Type == BlockType.Advanced){
-                     maxX = currentX + 3;
-                     maxY = currentY + 3;
-                }
-                if(obstacles[i].Type == BlockType.Intermediary){
-                    maxX = currentX + 2;
-                    maxY = currentY + 2;
-                }
-                List<Block> obstacleGroup = new List<Block>();
-                for(int x = currentX; x < maxX; x++) {
-                    for(int y = currentY; y < maxY; y++) {
-                        gonnaBeVisited.Add(new Coordinate(x, y));
-                    }
-                }
+                
+                List<Coordinate> gonnaBeVisited = GetObstacleGroup(obstacles[i]);
                 visited.AddRange(gonnaBeVisited);
                 List<Coordinate> turnToMoveble = gonnaBeVisited.OrderBy(x => r.Next()).Take(movebleBlockCount).ToList();
                 for(int j=0; j<movebleBlockCount; j++){
@@ -80,6 +63,29 @@ namespace prolab21.Helpers
                 }
             }
             return map;
+        }
+
+        private static List<Coordinate> GetObstacleGroup(Block currentBlock){
+            List<Coordinate> result = new List<Coordinate>();
+            int currentX = currentBlock.Position.X;
+            int currentY = currentBlock.Position.Y;
+            int maxX = 0;
+            int maxY = 0;
+            if(currentBlock.Type == BlockType.Advanced){
+                maxX = currentX + 3;
+                maxY = currentY + 3;
+            }
+            if(currentBlock.Type == BlockType.Intermediary){
+                maxX = currentX + 2;
+                maxY = currentY + 2;
+            }
+            List<Block> obstacleGroup = new List<Block>();
+            for(int x = currentX; x < maxX; x++) {
+                for(int y = currentY; y < maxY; y++) {
+                    result.Add(new Coordinate(x, y));
+                }
+            }
+            return result;
         }
 
         private static List<Block> GetObstacles(List<List<Block>> map) {

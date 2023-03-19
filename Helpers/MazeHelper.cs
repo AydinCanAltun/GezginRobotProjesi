@@ -9,6 +9,11 @@ namespace prolab21.Helpers
 {
     public static class MazeHelper
     {
+        /// <summary>
+        /// Metin olarak alınan harita matrisini 2d blok objesine çevirir ve engel bloklarının bazılarını rastgele bir şekilde yürünebilir hale getirir.
+        /// </summary>
+        /// <param name="mapAsString"></param>
+        /// <returns></returns>
         public static List<List<Block>> SetMap(string mapAsString){
             List<List<Block>> map = new List<List<Block>>();
             string[] mapLines = mapAsString.Split('\n');
@@ -28,6 +33,11 @@ namespace prolab21.Helpers
             return RandomizeObstacle(map);
         }
 
+        /// <summary>
+        /// Verilen karakteri ilgili blok tipine çevirir bilinen bir blok tipi değil ise yürünebilir yol olarak kabul eder.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         private static BlockType GetBlockType(char c){
             if(c == '0'){
                 return BlockType.Path;
@@ -44,6 +54,11 @@ namespace prolab21.Helpers
             return BlockType.Path;
         }
 
+        /// <summary>
+        /// Verilen tüm haritadaki engel bloklarını alır ve ilgili engel blok grubunun en az 1 en fazla 3 tanesini yürünebilir blok haline getirir.
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns></returns>
         private static List<List<Block>> RandomizeObstacle(List<List<Block>> map){
             List<Block> obstacles = GetObstacles(map);
             List<Coordinate> visited = new List<Coordinate>();
@@ -65,6 +80,11 @@ namespace prolab21.Helpers
             return map;
         }
 
+        /// <summary>
+        /// Verilen engel bloğunu başlangıç bloğu kabul ederek engel blok grubunun coordinatlarını döner. 
+        /// </summary>
+        /// <param name="currentBlock"></param>
+        /// <returns></returns>
         private static List<Coordinate> GetObstacleGroup(Block currentBlock){
             List<Coordinate> result = new List<Coordinate>();
             int currentX = currentBlock.Position.X;
@@ -88,6 +108,11 @@ namespace prolab21.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Haritadaki 2 veya 3 tipindeki blokları 1d array olarak döner
+        /// </summary>
+        /// <param name="map">Tüm harita</param>
+        /// <returns></returns>
         private static List<Block> GetObstacles(List<List<Block>> map) {
             List<Block> obstacles = new List<Block>();
             int mapHeight = map.Count;

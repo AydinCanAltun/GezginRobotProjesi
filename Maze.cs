@@ -4,6 +4,11 @@ using prolab21.Helpers;
 
 namespace prolab21 {
     public static class Maze {
+        /// <summary>
+        /// Verilen URL'deki metni okur ve 2d blok array'ine çevirir.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static async Task<Response<List<List<Block>>>> CreateMap(string url) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
             Http client = new Http(url);
@@ -19,6 +24,12 @@ namespace prolab21 {
             return map;
         }
 
+        /// <summary>
+        /// Genişlik ve Uzunluk parametrelerini alarak rastgele labirent oluşturur.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         public static Response<List<List<Block>>> CreateMap(int width, int height) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
             if((width < 20 && width > 100) || (height < 20 && height > 100) ) {

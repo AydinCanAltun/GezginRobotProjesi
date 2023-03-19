@@ -5,6 +5,7 @@ namespace GezginRobotProjesi.Entity.Enums
         Path,
         Basic,
         Intermediary,
-        Advanced
+        Advanced,
+        Unvisited
     }
 }

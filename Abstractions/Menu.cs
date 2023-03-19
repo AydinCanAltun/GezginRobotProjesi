@@ -16,9 +16,10 @@ namespace GezginRobotProjesi.Abstractions
         public async Task<Response<List<List<Block>>>> CreateMapFromUrl(){
             return await Maze.CreateMap(Constant.MapUrls[currentUrlId]);
         }
-
+        /*
         public Response<List<List<Block>>> CreateLabyrinth(){
             return Maze.CreateMap(width, height);
         }
+        */
     }
 }

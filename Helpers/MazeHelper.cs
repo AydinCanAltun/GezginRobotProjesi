@@ -61,7 +61,7 @@ namespace GezginRobotProjesi.Helpers
         /// <param name="map"></param>
         /// <returns></returns>
         private static List<List<Block>> RandomizeObstacle(List<List<Block>> map){
-            List<Block> obstacles = GetObstacles(map);
+            List<Block> obstacles = GetObstacles(map, BlockType.Basic);
             List<Coordinate> visited = new List<Coordinate>();
             int obstacleLen = obstacles.Count;
             for(int i=0; i<obstacleLen; i++) {
@@ -114,34 +114,31 @@ namespace GezginRobotProjesi.Helpers
         /// </summary>
         /// <param name="map">Tüm harita</param>
         /// <returns></returns>
-        private static List<Block> GetObstacles(List<List<Block>> map) {
+        public static List<Block> GetObstacles(List<List<Block>> map, BlockType type) {
             List<Block> obstacles = new List<Block>();
             int mapHeight = map.Count;
             for(int i=0; i<mapHeight; i++) {
-                List<Block> obstacleColumn = map[i].Where(x => x.IsMoveble == false && x.Type != BlockType.Basic).ToList();
+                List<Block> obstacleColumn = map[i].Where(x => x.IsMoveble == false && x.Type != type && x.Type != BlockType.Unvisited).ToList();
                 obstacles.AddRange(obstacleColumn);
             }
             return obstacles;
         }
 
-        public static List<List<Block>> SetMap(int width, int height){
-            List<List<Block>> map = new List<List<Block>>();
-            for(int i=0; i<width; i++) {
-                List<Block> column = new List<Block>();
-                for(int j=0; j<height; j++) {
-                    Coordinate position = new Coordinate(i, j);
-                    BlockType type = BlockType.Basic;
-                    column.Add(new Block(position, type, false, false));
+        public static void PrintMaze(List<List<Block>> map) {
+            int height = map.Count;
+            for(int i=0; i<height; i++){
+                int width = map[i].Count;
+                for(int j=0; j<width; j++){
+                    char c;
+                    if(map[i][j].IsMoveble){
+                        c = map[i][j].Type == BlockType.Path ? 'c' : 'a';
+                    }else{
+                        c = 'w';
+                    }
+                    Console.Write(string.Format("{0} ", c));
                 }
-                map.Add(column);
+                Console.Write('\n');
             }
-            return SetStartingPointAsCell(map);
-        }
-
-        private static List<List<Block>> SetStartingPointAsCell(List<List<Block>> map){
-            Random r = new Random();
-            Corners startingPoint = r.GetEnumValue<Corners>();
-            return map;
         }
     }
 }

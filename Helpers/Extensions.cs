@@ -6,13 +6,6 @@ using GezginRobotProjesi.Entity;
 
 namespace GezginRobotProjesi.Helpers
 {
-    public static class RandomExtensions {
-        public static T GetEnumValue<T>(this Random r){
-            var enumValues = Enum.GetValues(typeof(T));
-            return (T)enumValues.GetValue(r.Next(enumValues.Length));
-        }
-    }
-
     public static class ListExtensions{
         public static void AddIfNotExists<T>(this List<T> current, List<T> entries) {
             foreach(T entry in entries){

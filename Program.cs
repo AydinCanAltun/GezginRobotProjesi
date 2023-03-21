@@ -20,14 +20,14 @@ if(map2.IsSuccess){
     Console.WriteLine(map2.ErrorMessage);
 }
 
+
 Console.WriteLine("---------------");
-Console.WriteLine("Labirent Başlangıç MAP");
-Labyrinth entity = new Labyrinth(27,33);
-Console.WriteLine("Başlangıç Noktası: ({0},{1}), Bitiş Noktası: ({2},{3})", entity.StartingPoint.X, entity.StartingPoint.Y, entity.EndingPoint.X, entity.EndingPoint.Y);
-Response<List<List<Block>>> labyrnth = Maze.CreateMap(entity);
-if(labyrnth.IsSuccess){
-    MazeHelper.PrintMaze(labyrnth.Result);
+Console.WriteLine("Labirent MAP");
+Response<List<List<Block>>> map3 = Maze.CreateMap(27, 33);
+if(map.IsSuccess){
+    MazeHelper.PrintMaze(map3.Result);
 }else{
-    Console.WriteLine(labyrnth.ErrorMessage);
+    Console.WriteLine(map3.ErrorMessage);
 }
+
 

@@ -30,15 +30,15 @@ namespace GezginRobotProjesi {
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public static Response<List<List<Block>>> CreateMap(Labyrinth entity) {
+        public static Response<List<List<Block>>> CreateMap(int height, int width) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
-            if((entity.Width < 20 && entity.Width > 100) || (entity.Heigth < 20 && entity.Heigth > 100) ) {
+            if((width < 20 && width > 100) || (height < 20 && height > 100) ) {
                 map.IsSuccess = false;
-                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği 20-100 arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", entity.Width, entity.Heigth);
+                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği 20-100 arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", width, height);
                 return map;
             }
             map.IsSuccess = true;
-            map.Result = LabyrinthHelper.SetMap(entity);
+            map.Result = LabyrinthHelper.SetMap(height, width);
             return map;
         }
     }

@@ -118,7 +118,7 @@ namespace GezginRobotProjesi.Helpers
             List<Block> obstacles = new List<Block>();
             int mapHeight = map.Count;
             for(int i=0; i<mapHeight; i++) {
-                List<Block> obstacleColumn = map[i].Where(x => x.IsMoveble == false && x.Type != type && x.Type != BlockType.Unvisited).ToList();
+                List<Block> obstacleColumn = map[i].Where(x => x.IsMoveble == false && x.Type != type && x.Type != BlockType.Path && x.Type != BlockType.Unvisited).ToList();
                 obstacles.AddRange(obstacleColumn);
             }
             return obstacles;
@@ -134,6 +134,18 @@ namespace GezginRobotProjesi.Helpers
                         c = map[i][j].Type == BlockType.Path ? 'c' : 'a';
                     }else{
                         c = 'w';
+                    }
+                    if(c == 'c'){
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                    }
+                    if(c == 'a'){
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.Green;
+                    }
+                    if(c == 'w'){
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Red;
                     }
                     Console.Write(string.Format("{0} ", c));
                 }

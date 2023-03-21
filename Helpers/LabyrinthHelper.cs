@@ -9,13 +9,16 @@ namespace GezginRobotProjesi.Helpers
 {
     public static class LabyrinthHelper
     {
-        public static List<List<Block>> SetMap(Labyrinth entity) {
-            List<List<Block>> map = SetBasicMap(entity.Heigth, entity.Width);
-            SetBlockAsPath(map, entity.StartingPoint);
-            List<Block> walls = GetSurroundingWalls(entity.Heigth, entity.Width, entity.StartingPoint);
+        public static List<List<Block>> SetMap(int height, int width) {
+            Random r = new Random();
+            List<List<Block>> map = SetBasicMap(height, width);
+            Coordinate startingPoint = GetStartingPointForLabyrinthCreation(height, width);
+            SetBlockAsPath(map, startingPoint);
+            List<Block> walls = GetSurroundingWalls(map, startingPoint);
             SetBlocksToMap(map, walls);
-            CreateLabyrinth(entity.Heigth, entity.Width, map);
+            CreateLabyrinth(map);
             SetAllUnvisitedBlockAsBasic(map);
+            PrintStartingEndingPoint(height, width, map);
             return map;
         }
 
@@ -39,18 +42,20 @@ namespace GezginRobotProjesi.Helpers
             map[position.X][position.Y].IsMoveble = true;
         }
 
-        private static List<Block> GetSurroundingWalls(int height, int width, Coordinate position){
+        private static List<Block> GetSurroundingWalls(List<List<Block>> map, Coordinate position){
+            int height = map.Count;
+            int width = height > 0 ? map[0].Count : 0;
             List<Block> walls = new List<Block>();
-            if(position.X != 0){
+            if(position.X != 0 && map[position.X - 1][position.Y].Type != BlockType.Path){
                 walls.Add(new Block(new Coordinate(position.X - 1, position.Y), BlockType.Basic, false, false));
             }
-            if(position.X != height - 1){
+            if(position.X != height - 1 && map[position.X + 1][position.Y].Type != BlockType.Path){
                 walls.Add(new Block(new Coordinate(position.X + 1, position.Y), BlockType.Basic, false, false));
             }
-            if(position.Y != 0){
+            if(position.Y != 0 && map[position.X][position.Y - 1].Type != BlockType.Path){
                 walls.Add(new Block(new Coordinate(position.X, position.Y - 1), BlockType.Basic, false, false));
             }
-            if(position.Y != width - 1){
+            if(position.Y != width - 1 && map[position.X][position.Y + 1].Type != BlockType.Path){
                 walls.Add(new Block(new Coordinate(position.X, position.Y + 1), BlockType.Basic, false, false));
             }
             return walls;
@@ -65,7 +70,9 @@ namespace GezginRobotProjesi.Helpers
             }
         }
 
-        private static void CreateLabyrinth(int height, int width, List<List<Block>> map){
+        private static void CreateLabyrinth(List<List<Block>> map){
+            int height = map.Count;
+            int width = height > 0 ? map[0].Count : 0;
             Random r = new Random();
             List<Block> walls = MazeHelper.GetObstacles(map, BlockType.Unvisited).Where(x => x.Type == BlockType.Basic).ToList();
             while(walls.Any()){
@@ -75,7 +82,7 @@ namespace GezginRobotProjesi.Helpers
                         int surroundingPaths = CountSurroundingPaths(map, randomWall.Position);
                         if(surroundingPaths < 2){
                             SetBlockAsPath(map, randomWall.Position);
-                            List<Block> newWalls = GetSurroundingWalls(height, width, randomWall.Position);
+                            List<Block> newWalls = GetSurroundingWalls(map, randomWall.Position);
                             walls.AddIfNotExists<Block>(newWalls);
                         }
                         walls.Remove(randomWall);
@@ -87,7 +94,7 @@ namespace GezginRobotProjesi.Helpers
                         int surroundingPaths = CountSurroundingPaths(map, randomWall.Position);
                         if(surroundingPaths < 2){
                             SetBlockAsPath(map, randomWall.Position);
-                            List<Block> newWalls = GetSurroundingWalls(height, width, randomWall.Position);
+                            List<Block> newWalls = GetSurroundingWalls(map, randomWall.Position);
                             walls.AddIfNotExists<Block>(newWalls);
                         }
                         walls.Remove(randomWall);
@@ -99,7 +106,7 @@ namespace GezginRobotProjesi.Helpers
                         int surroundingPaths = CountSurroundingPaths(map, randomWall.Position);
                         if(surroundingPaths < 2){
                             SetBlockAsPath(map, randomWall.Position);
-                            List<Block> newWalls = GetSurroundingWalls(height, width, randomWall.Position);
+                            List<Block> newWalls = GetSurroundingWalls(map, randomWall.Position);
                             walls.AddIfNotExists<Block>(newWalls);
                         }
                         walls.Remove(randomWall);
@@ -111,7 +118,7 @@ namespace GezginRobotProjesi.Helpers
                         int surroundingPaths = CountSurroundingPaths(map, randomWall.Position);
                         if(surroundingPaths < 2){
                             SetBlockAsPath(map, randomWall.Position);
-                            List<Block> newWalls = GetSurroundingWalls(height, width, randomWall.Position);
+                            List<Block> newWalls = GetSurroundingWalls(map, randomWall.Position);
                             walls.AddIfNotExists<Block>(newWalls);
                         }
                         walls.Remove(randomWall);
@@ -145,6 +152,47 @@ namespace GezginRobotProjesi.Helpers
                     map[unvisited.Position.X][unvisited.Position.Y].Type = BlockType.Basic;
                 }
             }
+        }
+
+        private static Coordinate GetStartingPointForLabyrinthCreation(int height, int width){
+            Random r = new Random();
+            int xPosition = r.Next(0, height);
+            int yPosition = r.Next(0, width);
+            if(xPosition == 0){
+                xPosition = 1;
+            }
+            if(xPosition == height - 1){
+                xPosition = height - 2;
+            }
+            if(yPosition == 0){
+                yPosition = 1;
+            }
+            if(yPosition == width - 1){
+                yPosition = width - 2;
+            }
+            return new Coordinate(xPosition, yPosition);
+        }
+
+        public static void PrintStartingEndingPoint(int height, int width, List<List<Block>> map){
+            Coordinate startingPosition;
+            Coordinate endingPosition;
+            for(int i=0; i<width; i++){
+                if(map[1][i].Type == BlockType.Path){
+                    startingPosition = new Coordinate(0, i);
+                    SetBlockAsPath(map, startingPosition);
+                    Console.WriteLine("Başlangıç Noktası: ({0},{1})", startingPosition.X, startingPosition.Y);
+                    break;
+                }
+            }
+            for(int j=width-1; j>-1; j--){
+                if(map[height-2][j].Type == BlockType.Path){
+                    endingPosition = new Coordinate(height-1, j);
+                    SetBlockAsPath(map, endingPosition);
+                    Console.WriteLine("Bitiş Noktası: ({0},{1})", endingPosition.X, endingPosition.Y);
+                    break;
+                }
+            }
+            
         }
 
     }

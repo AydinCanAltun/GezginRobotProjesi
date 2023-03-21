@@ -14,5 +14,10 @@ namespace GezginRobotProjesi.Entity
             this.X = xPosition;
             this.Y = yPosition;
         }
+
+        public bool IsEqual(Coordinate target){
+            return this.X == target.X && this.Y == target.Y;
+        }
+
     }
 }

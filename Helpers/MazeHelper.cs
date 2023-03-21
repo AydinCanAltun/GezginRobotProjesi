@@ -131,7 +131,7 @@ namespace GezginRobotProjesi.Helpers
                 for(int j=0; j<width; j++){
                     char c;
                     if(map[i][j].IsMoveble){
-                        c = map[i][j].Type == BlockType.Path ? 'c' : 'a';
+                        c = map[i][j].Type == BlockType.Path ? 'c' : 'w';
                     }else{
                         c = 'w';
                     }
@@ -147,8 +147,9 @@ namespace GezginRobotProjesi.Helpers
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.BackgroundColor = ConsoleColor.Red;
                     }
-                    Console.Write(string.Format("{0} ", c));
+                    Console.Write(string.Format(" {0} ", c));
                 }
+                Console.ResetColor();
                 Console.Write('\n');
             }
         }

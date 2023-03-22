@@ -4,7 +4,7 @@ using GezginRobotProjesi.Entity;
 ConsoleMenu menu = new ConsoleMenu();
 Application game = new Application(menu);
 
-game.GameLoop();
+game.GameLoop().Wait();
 
 
 

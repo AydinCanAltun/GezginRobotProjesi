@@ -3,13 +3,13 @@ using GezginRobotProjesi.Entity.Enums;
 using GezginRobotProjesi.Helpers;
 
 namespace GezginRobotProjesi {
-    public static class Maze {
+    public class Maze {
         /// <summary>
         /// Verilen URL'deki metni okur ve 2d blok array'ine çevirir.
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static async Task<Response<List<List<Block>>>> CreateMap(string url) {
+        public async Task<Response<List<List<Block>>>> CreateMap(string url) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
             Http client = new Http(url);
             Response<string> mapDataResponse = await client.Get();
@@ -30,7 +30,7 @@ namespace GezginRobotProjesi {
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public static Response<List<List<Block>>> CreateMap(int height, int width) {
+        public Response<List<List<Block>>> CreateMap(int height, int width) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
             if((width < Constant.MinimumSize.Width && width > Constant.MaximumSize.Width) || (height < Constant.MinimumSize.Height && height > Constant.MaximumSize.Height) ) {
                 map.IsSuccess = false;

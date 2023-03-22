@@ -12,14 +12,16 @@ namespace GezginRobotProjesi
         private readonly Menu _menu;
         List<Coordinate> Visited {get; set;}
         public GameMap Map {get; set;}
+        private readonly Maze _maze;
 
         public Application(Menu menu){
             Console.TreatControlCAsInput = true;
             _menu = menu;
             Visited = new List<Coordinate>();
+            _maze = new Maze();
         }
 
-        public async void GameLoop(){
+        public async Task GameLoop(){
             while (true) {
                 _menu.Draw();
                 if(_menu.GetTakenAction() == 0){

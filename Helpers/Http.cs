@@ -9,10 +9,8 @@ namespace GezginRobotProjesi.Helpers
     public class Http
     {
         private const string EXCEPTION_MESSAGE_FORMAT = "Exception Message: {0}, URL: ";
-        private readonly HttpClient client;
         private readonly string url;
         public Http(string url){
-            client = new HttpClient();
             this.url = url;
         }
 
@@ -46,9 +44,15 @@ namespace GezginRobotProjesi.Helpers
                 return mapResult;
             }
             try{
-                mapResult.IsSuccess = true;
-                mapResult.Result = await client.GetStringAsync(urlValidation.Result);
-                mapResult.ErrorMessage = string.Empty;
+                using(HttpClient client = new HttpClient()){
+                    using(HttpResponseMessage response = await client.GetAsync(url)){
+                        using(HttpContent content = response.Content){
+                            mapResult.IsSuccess = true;
+                            mapResult.Result = await content.ReadAsStringAsync();
+                            mapResult.ErrorMessage = string.Empty;
+                        }
+                    }
+                }
             }catch(Exception ex){
                 mapResult.IsSuccess = false;
                 mapResult.Result = string.Empty;

@@ -10,10 +10,12 @@ namespace GezginRobotProjesi.Abstractions
         protected abstract void TakeAction();
         public abstract Response<MapSize> AskMapSize();
         public abstract void ShowError(string errorMessage);
+        private Maze _maze;
 
         public Menu(){
             takenAction = -1;
             currentUrlId = 0;
+            _maze = new Maze();
         }
 
         protected void SetTakenAction(int action){
@@ -34,7 +36,7 @@ namespace GezginRobotProjesi.Abstractions
             Response<GameMap> gameMap = new Response<GameMap>();
             try
             {
-                Response<List<List<Block>>> map = await Maze.CreateMap(Constant.MapUrls[currentUrlId]);
+                Response<List<List<Block>>> map = await _maze.CreateMap(Constant.MapUrls[currentUrlId]);
                 gameMap.IsSuccess = map.IsSuccess;
                 if (map.IsSuccess)
                 {
@@ -52,7 +54,7 @@ namespace GezginRobotProjesi.Abstractions
         
         public Response<GameMap> CreateLabyrinth(int height, int width){
             Response<GameMap> gameMap = new Response<GameMap>();
-            Response<List<List<Block>>> map = Maze.CreateMap(height, width);
+            Response<List<List<Block>>> map = _maze.CreateMap(height, width);
             gameMap.IsSuccess = map.IsSuccess;
             if(gameMap.IsSuccess){
                 gameMap.Result = new ConsoleMap(map.Result);

@@ -13,7 +13,7 @@ namespace GezginRobotProjesi.Implementations.Factory
     {
         public PlayerRobot CreateInstance(Coordinate position)
         {
-            return new PledgeRobot(position);
+            return new WallFollowerRobot(position);
         }
     }
 }

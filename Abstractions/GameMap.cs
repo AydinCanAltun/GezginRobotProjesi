@@ -42,5 +42,16 @@ namespace GezginRobotProjesi.Abstractions
         public bool IsGameOver(Coordinate robotPosition){
             return EndingPosition.IsEqual(robotPosition);
         }
+
+        public bool CanMove(Coordinate position){
+            int height = Playground.Count;
+            int width = height > 0 ? Playground[0].Count : 0;
+            try{
+                return Playground[position.X][position.Y].IsMoveble;
+            }catch(Exception ex){
+                return false;
+            }
+        }
+
     }
 }

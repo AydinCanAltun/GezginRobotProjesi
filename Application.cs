@@ -1,5 +1,6 @@
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Helpers;
 using GezginRobotProjesi.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,11 +48,31 @@ namespace GezginRobotProjesi
 
         public void StartGame(Response<GameMap> gameMap){
             if(gameMap.IsSuccess){
+                bool isGameOver = false;
                 PlayerRobot player = _serviceProvider.GetRequiredService<IPlayerRobotFactory>().CreateInstance(gameMap.Result.StartingPosition);
-                while(!gameMap.Result.IsGameOver(player.CurrentPosition)){
-                    gameMap.Result.Draw(player.VisitedCoordinates, player.CurrentPosition);
-                    player.Move();
+                player.SetIsGameOver(isGameOver);
+                WallFollower wallFollower = new WallFollower(gameMap.Result, player);
+                while(!player.ShouldFinishGame()){
+                    wallFollower.GameMap.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                    while(player.GetAction() == -1){
+                        player.WaitForAction();
+                    }
+                    int playerAction = player.GetAction();
+                    if(playerAction == 1 || playerAction == 2){
+                        bool shouldWaitAnotherAction = playerAction == 1;
+                        Coordinate nextPosition = wallFollower.NextPosition();
+                        player.Move(nextPosition, shouldWaitAnotherAction);
+                        if(wallFollower.GameMap.EndingPosition.IsEqual(nextPosition)){
+                            wallFollower.Player.SetIsGameOver(true);
+                        }
+                    }
+                    if(playerAction == 3) {
+                        player.ShowGameEndingMessage();
+                        player.SetIsGameOver(true);
+                    }
                 }
+                wallFollower.GameMap.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                Console.ReadKey();
             }else{
                 _menu.ShowError(gameMap.ErrorMessage);
             }

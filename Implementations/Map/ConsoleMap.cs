@@ -6,10 +6,11 @@ using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
 using GezginRobotProjesi.Entity.Enums;
 
-namespace GezginRobotProjesi
+namespace GezginRobotProjesi.Implementations.Map
 {
     public class ConsoleMap : GameMap
     {
+        public ConsoleMap() : base(){ }
         public ConsoleMap(List<List<Block>> map) : base(map){}
         public override void Draw()
         {

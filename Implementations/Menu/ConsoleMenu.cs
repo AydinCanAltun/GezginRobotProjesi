@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace GezginRobotProjesi
+namespace GezginRobotProjesi.Implementations.Menu
 {
-    public class ConsoleMenu : Menu
+    public class ConsoleMenu : GameMenu
     {
         private bool shouldRedraw {get; set;}
         private bool shouldClearConsole {get; set;}
@@ -34,7 +35,7 @@ namespace GezginRobotProjesi
                 SetTakenAction(-1);
                 shouldClearConsole = true;
                 Console.WriteLine("Gezgin Robot Projesi");
-                Console.WriteLine("Aydın Can Altun (180202117) - Barış Arslan()");
+                Console.WriteLine("Aydın Can Altun (180202117) - Barış Arslan(180202112)");
                 Console.WriteLine(string.Format("1) Problem 1 ({0})", Constant.MapUrls[currentUrlId]));
                 Console.WriteLine("2) Problem 2");
                 Console.WriteLine("3) Problem 1 Link Değiştir");

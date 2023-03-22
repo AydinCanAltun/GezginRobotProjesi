@@ -15,7 +15,14 @@ namespace GezginRobotProjesi.Abstractions
         public Coordinate EndingPosition {get; set;} = new Coordinate(0, 0);
         public Robot Player {get; set;}
 
-        public GameMap(List<List<Block>> map){
+        public GameMap() { 
+            this.Playground = new List<List<Block>>();
+            this.StartingPosition = new Coordinate(0, 0);
+            this.EndingPosition = new Coordinate(0, 0);
+            this.Player = new Robot(0, 0);
+        }
+
+        public void SetGameMap(List<List<Block>> map){
             this.Playground = map;
             int height = map.Count;
             int width = height > 0 ? map[0].Count : 0;

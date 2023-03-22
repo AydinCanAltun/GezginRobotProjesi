@@ -1,22 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi
 {
     public class Application
     {
-        private readonly Menu _menu;
+        private readonly ServiceProvider _serviceProvider;
+        private readonly GameMenu _menu;
         List<Coordinate> Visited {get; set;}
         public GameMap Map {get; set;}
         private readonly Maze _maze;
 
-        public Application(Menu menu){
+        public Application(ServiceProvider serviceProvider){
             Console.TreatControlCAsInput = true;
-            _menu = menu;
+            _serviceProvider = serviceProvider;
+            _menu = _serviceProvider.GetRequiredService<GameMenu>();
+            _menu.SetServiceProvider(_serviceProvider);
             Visited = new List<Coordinate>();
             _maze = new Maze();
         }

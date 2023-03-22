@@ -1,9 +1,12 @@
 using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Implementations.Map;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi.Abstractions
 {
-    public abstract class Menu
+    public abstract class GameMenu
     {
+        private ServiceProvider _serviceProvider;
         protected int takenAction  {get; set;}
         protected int currentUrlId {get; set;}
         public abstract void Draw();
@@ -12,7 +15,7 @@ namespace GezginRobotProjesi.Abstractions
         public abstract void ShowError(string errorMessage);
         private Maze _maze;
 
-        public Menu(){
+        public GameMenu(){
             takenAction = -1;
             currentUrlId = 0;
             _maze = new Maze();
@@ -30,6 +33,9 @@ namespace GezginRobotProjesi.Abstractions
             currentUrlId = currentUrlId == 0 ? 1 : 0;
         }
 
+        public void SetServiceProvider(ServiceProvider serviceProvider){
+            _serviceProvider = serviceProvider;
+        }
         
 
         public async Task<Response<GameMap>> CreateMapFromUrl(){
@@ -40,7 +46,8 @@ namespace GezginRobotProjesi.Abstractions
                 gameMap.IsSuccess = map.IsSuccess;
                 if (map.IsSuccess)
                 {
-                    gameMap.Result = new ConsoleMap(map.Result);
+                    gameMap.Result = _serviceProvider.GetRequiredService<GameMap>();
+                    gameMap.Result.SetGameMap(map.Result);
                 }
                 gameMap.ErrorMessage = gameMap.IsSuccess ? string.Empty : map.ErrorMessage;
             }catch(Exception ex)
@@ -57,7 +64,8 @@ namespace GezginRobotProjesi.Abstractions
             Response<List<List<Block>>> map = _maze.CreateMap(height, width);
             gameMap.IsSuccess = map.IsSuccess;
             if(gameMap.IsSuccess){
-                gameMap.Result = new ConsoleMap(map.Result);
+                gameMap.Result = _serviceProvider.GetRequiredService<GameMap>();
+                gameMap.Result.SetGameMap(map.Result);
             }
             gameMap.ErrorMessage = gameMap.IsSuccess ? string.Empty : map.ErrorMessage;
             return gameMap;

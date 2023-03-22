@@ -13,6 +13,7 @@ namespace GezginRobotProjesi.Abstractions
         public List<List<Block>> Playground {get; set;}
         public Coordinate StartingPosition {get; set;} = new Coordinate(0, 0);
         public Coordinate EndingPosition {get; set;} = new Coordinate(0, 0);
+        public Robot Player {get; set;}
 
         public GameMap(List<List<Block>> map){
             this.Playground = map;
@@ -32,12 +33,7 @@ namespace GezginRobotProjesi.Abstractions
                     break;
                 }
             }
-        }
-
-        public GameMap(List<List<Block>> map, Coordinate startingPosition, Coordinate endingPosition){
-            this.Playground = map;
-            this.StartingPosition = startingPosition;
-            this.EndingPosition = endingPosition;
+            Player = new Robot(StartingPosition.X, StartingPosition.Y);
         }
 
         public abstract void Draw();

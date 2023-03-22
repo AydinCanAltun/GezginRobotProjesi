@@ -11,7 +11,6 @@ namespace GezginRobotProjesi
     public class ConsoleMap : GameMap
     {
         public ConsoleMap(List<List<Block>> map) : base(map){}
-        public ConsoleMap(List<List<Block>> map, Coordinate startingPosition, Coordinate endingPosition) : base(map, startingPosition, endingPosition){}
         public override void Draw()
         {
             Console.Clear();
@@ -28,6 +27,7 @@ namespace GezginRobotProjesi
                 Console.ResetColor();
                 Console.Write("\n");
             }
+            Console.ReadKey();
         }
 
         private void SetBackgroundColor(Block block){
@@ -43,6 +43,11 @@ namespace GezginRobotProjesi
             if(block.Position.IsEqual(this.StartingPosition) || block.Position.IsEqual(this.EndingPosition)){
                 Console.BackgroundColor = ConsoleColor.Yellow;
             }
+
+            if(block.Position.IsEqual(Player.CurrentPosition)){
+                Console.BackgroundColor = ConsoleColor.Magenta;
+            }
+
         }
     }
 }

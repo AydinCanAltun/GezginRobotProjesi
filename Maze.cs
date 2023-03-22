@@ -12,7 +12,7 @@ namespace GezginRobotProjesi {
         public static async Task<Response<List<List<Block>>>> CreateMap(string url) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
             Http client = new Http(url);
-            Response<string> mapDataResponse = await client.Get(url);
+            Response<string> mapDataResponse = await client.Get();
             if(!mapDataResponse.IsSuccess){
                 map.IsSuccess = false;
                 map.ErrorMessage = mapDataResponse.ErrorMessage;
@@ -32,9 +32,9 @@ namespace GezginRobotProjesi {
         /// <returns></returns>
         public static Response<List<List<Block>>> CreateMap(int height, int width) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
-            if((width < 20 && width > 100) || (height < 20 && height > 100) ) {
+            if((width < Constant.MinimumSize.Width && width > Constant.MaximumSize.Width) || (height < Constant.MinimumSize.Height && height > Constant.MaximumSize.Height) ) {
                 map.IsSuccess = false;
-                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği 20-100 arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", width, height);
+                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği {3}-{4}} arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", width, height, Constant.MinimumSize.Width, Constant.MaximumSize.Width);
                 return map;
             }
             map.IsSuccess = true;

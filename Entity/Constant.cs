@@ -11,5 +11,9 @@ namespace GezginRobotProjesi.Entity
             "http://bilgisayar.kocaeli.edu.tr/prolab2/url1.txt",
             "http://bilgisayar.kocaeli.edu.tr/prolab2/url2.txt"
         };
+
+        public static MapSize MinimumSize = new MapSize(10, 10);
+        public static MapSize MaximumSize = new MapSize(100, 100);
+
     }
 }

@@ -16,7 +16,7 @@ namespace GezginRobotProjesi.Helpers
             this.url = url;
         }
 
-        private Response<Uri> ValidateUrl(string url){
+        private Response<Uri> ValidateUrl(){
             Response<Uri> response = new Response<Uri>();
             Uri uri;
             if(string.IsNullOrWhiteSpace(url)){
@@ -36,9 +36,9 @@ namespace GezginRobotProjesi.Helpers
             return response;
         }
 
-        public async Task<Response<string>> Get(string url) {
+        public async Task<Response<string>> Get() {
             Response<string> mapResult = new Response<string>();
-            Response<Uri> urlValidation = ValidateUrl(url);
+            Response<Uri> urlValidation = ValidateUrl();
             if(!urlValidation.IsSuccess) {
                 mapResult.IsSuccess = false;
                 mapResult.Result = string.Empty;
@@ -49,7 +49,7 @@ namespace GezginRobotProjesi.Helpers
                 mapResult.IsSuccess = true;
                 mapResult.Result = await client.GetStringAsync(urlValidation.Result);
                 mapResult.ErrorMessage = string.Empty;
-            }catch(AggregateException ex){
+            }catch(Exception ex){
                 mapResult.IsSuccess = false;
                 mapResult.Result = string.Empty;
                 mapResult.ErrorMessage = string.Format(EXCEPTION_MESSAGE_FORMAT, ex.InnerException is null ? ex.Message : ex.InnerException.Message, url);

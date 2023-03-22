@@ -1,5 +1,6 @@
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi
@@ -9,14 +10,12 @@ namespace GezginRobotProjesi
         private readonly ServiceProvider _serviceProvider;
         private readonly GameMenu _menu;
         List<Coordinate> Visited {get; set;}
-        public GameMap Map {get; set;}
         private readonly Maze _maze;
 
         public Application(ServiceProvider serviceProvider){
             Console.TreatControlCAsInput = true;
             _serviceProvider = serviceProvider;
             _menu = _serviceProvider.GetRequiredService<GameMenu>();
-            _menu.SetServiceProvider(_serviceProvider);
             Visited = new List<Coordinate>();
             _maze = new Maze();
         }
@@ -29,13 +28,13 @@ namespace GezginRobotProjesi
                     break;
                 }
                 if(_menu.GetTakenAction() == 1){
-                    Response<GameMap> gameMap = await _menu.CreateMapFromUrl();
+                    Response<GameMap> gameMap = await _menu.CreateMapFromUrl(_serviceProvider);
                     StartGame(gameMap);
                 }
                 if(_menu.GetTakenAction() == 2){
                     Response<MapSize> mapSize = _menu.AskMapSize();
                     if(mapSize.IsSuccess){
-                        Response<GameMap> gameMap = _menu.CreateLabyrinth(mapSize.Result.Height, mapSize.Result.Width);
+                        Response<GameMap> gameMap = _menu.CreateLabyrinth(_serviceProvider, mapSize.Result.Height, mapSize.Result.Width);
                         StartGame(gameMap);
                     }
                 }
@@ -48,8 +47,11 @@ namespace GezginRobotProjesi
 
         public void StartGame(Response<GameMap> gameMap){
             if(gameMap.IsSuccess){
-                this.Map = gameMap.Result;
-                gameMap.Result.Draw();
+                PlayerRobot player = _serviceProvider.GetRequiredService<IPlayerRobotFactory>().CreateInstance(gameMap.Result.StartingPosition);
+                while(!gameMap.Result.IsGameOver(player.CurrentPosition)){
+                    gameMap.Result.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                    player.Move();
+                }
             }else{
                 _menu.ShowError(gameMap.ErrorMessage);
             }

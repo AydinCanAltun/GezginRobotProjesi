@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
 using GezginRobotProjesi.Entity.Enums;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi.Implementations.Map
 {
     public class ConsoleMap : GameMap
     {
-        public ConsoleMap() : base(){ }
-        public override void Draw()
+        public ConsoleMap(List<List<Block>> map) : base(map){ }
+        public override void Draw(List<Coordinate> visited, Coordinate robotPosition)
         {
             Console.Clear();
             Console.ResetColor();
@@ -21,7 +22,7 @@ namespace GezginRobotProjesi.Implementations.Map
             Console.WriteLine(string.Format("Bitiş Noktası: ({0},{1})", this.EndingPosition.X, this.EndingPosition.Y));
             for(int i=0; i<height; i++) {
                 for(int j=0; j<width; j++) {
-                    SetBackgroundColor(this.Playground[i][j]);
+                    SetBackgroundColor(this.Playground[i][j], visited, robotPosition);
                     Console.Write(string.Format(" {0} ", ((int)this.Playground[i][j].Type)));
                 }
                 Console.ResetColor();
@@ -30,24 +31,27 @@ namespace GezginRobotProjesi.Implementations.Map
             Console.ReadKey();
         }
 
-        private void SetBackgroundColor(Block block){
-            if(block.Type == BlockType.Path){
-                Console.BackgroundColor = block.IsVisible ? ConsoleColor.Green : ConsoleColor.DarkGreen;
+        private void SetBackgroundColor(Block currentBlock, List<Coordinate> visitedBlocks, Coordinate robotPosition){
+            if(currentBlock.Type == BlockType.Path){
+                Console.BackgroundColor = currentBlock.IsVisible ? ConsoleColor.Green : ConsoleColor.DarkGreen;
             }else{
-                if(block.IsMoveble){
+                if(currentBlock.IsMoveble){
                     Console.BackgroundColor = ConsoleColor.Red;
                 }else{
                     Console.BackgroundColor = ConsoleColor.DarkRed;
                 }
             }
-            if(block.Position.IsEqual(this.StartingPosition) || block.Position.IsEqual(this.EndingPosition)){
+            if(currentBlock.Position.IsEqual(this.StartingPosition) || currentBlock.Position.IsEqual(this.EndingPosition)){
                 Console.BackgroundColor = ConsoleColor.Yellow;
             }
 
-            if(block.Position.IsEqual(Player.CurrentPosition)){
-                Console.BackgroundColor = ConsoleColor.Magenta;
+            if(visitedBlocks.Any(c => c.X == currentBlock.Position.X && c.Y == currentBlock.Position.Y)){
+                Console.BackgroundColor = ConsoleColor.White;
             }
 
+            if(currentBlock.Position.IsEqual(robotPosition)){
+                Console.BackgroundColor = ConsoleColor.Magenta;
+            }
         }
     }
 }

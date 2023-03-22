@@ -14,7 +14,7 @@ namespace GezginRobotProjesi.Implementations.Menu
         private bool shouldClearConsole {get; set;}
         private string errorMessage {get; set;}
 
-        public ConsoleMenu():base(){
+        public ConsoleMenu() : base(){
             shouldRedraw = true;
             shouldClearConsole = true;
             errorMessage = string.Empty;

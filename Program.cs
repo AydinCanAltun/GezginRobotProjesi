@@ -1,15 +1,15 @@
 ﻿using GezginRobotProjesi;
 using GezginRobotProjesi.Abstractions;
-using GezginRobotProjesi.Implementations.Map;
+using GezginRobotProjesi.Implementations.Factory;
 using GezginRobotProjesi.Implementations.Menu;
+using GezginRobotProjesi.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = new ServiceCollection()
-    .AddSingleton<GameMap, ConsoleMap>()
-    .AddTransient<GameMenu, ConsoleMenu>()
+    .AddSingleton<IPlayerRobotFactory, PlayerRobotFactory>()
+    .AddSingleton<IGameMapFactory, GameMapFactory>()
+    .AddSingleton<GameMenu, ConsoleMenu>()
     .BuildServiceProvider();
-
 
 Application game = new Application(builder);
 

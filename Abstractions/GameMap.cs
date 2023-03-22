@@ -5,25 +5,20 @@ using System.Threading.Tasks;
 using GezginRobotProjesi.Entity;
 using GezginRobotProjesi.Entity.Enums;
 using GezginRobotProjesi.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi.Abstractions
 {
     public abstract class GameMap
     {
         public List<List<Block>> Playground {get; set;}
-        public Coordinate StartingPosition {get; set;} = new Coordinate(0, 0);
-        public Coordinate EndingPosition {get; set;} = new Coordinate(0, 0);
-        public Robot Player {get; set;}
+        public Coordinate StartingPosition {get; set;}
+        public Coordinate EndingPosition {get; set;}
 
-        public GameMap() { 
-            this.Playground = new List<List<Block>>();
+        public GameMap(List<List<Block>> map){
+            this.Playground = map;
             this.StartingPosition = new Coordinate(0, 0);
             this.EndingPosition = new Coordinate(0, 0);
-            this.Player = new Robot(0, 0);
-        }
-
-        public void SetGameMap(List<List<Block>> map){
-            this.Playground = map;
             int height = map.Count;
             int width = height > 0 ? map[0].Count : 0;
             for(int i=0; i<width; i++){
@@ -40,10 +35,12 @@ namespace GezginRobotProjesi.Abstractions
                     break;
                 }
             }
-            Player = new Robot(StartingPosition.X, StartingPosition.Y);
         }
 
-        public abstract void Draw();
+        public abstract void Draw(List<Coordinate> visited, Coordinate robotPosition);
 
+        public bool IsGameOver(Coordinate robotPosition){
+            return EndingPosition.IsEqual(robotPosition);
+        }
     }
 }

@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GezginRobotProjesi.Entity;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace GezginRobotProjesi
+namespace GezginRobotProjesi.Abstractions
 {
-    public class Robot
+    public abstract class PlayerRobot
     {
         public Coordinate CurrentPosition {get; set;}
         public List<Coordinate> VisitedCoordinates {get; set;}
 
-        public Robot(int x, int y){
-            CurrentPosition = new Coordinate(x, y);
+        public PlayerRobot(Coordinate startingPosition){
+            CurrentPosition = startingPosition;
             VisitedCoordinates = new List<Coordinate>();
         }
 
-        public void Move() {
+        public abstract void Move();
 
+        public void SetPosition(Coordinate position){
+            CurrentPosition = position;
         }
 
         private void AddVisited(int x, int y) {

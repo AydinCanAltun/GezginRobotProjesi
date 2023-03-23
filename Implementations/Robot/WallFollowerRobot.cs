@@ -21,6 +21,7 @@ namespace GezginRobotProjesi.Implementations.Robot
         public override void WaitForAction()
         {
             try{
+                Console.WriteLine("1) Bir adım ilerle, 2) Sonuna kadar git, 3) Oyunu Sonlandır");
                 ConsoleKeyInfo input = Console.ReadKey();
                 int action;
                 if(char.IsDigit(input.KeyChar) && int.TryParse(input.KeyChar.ToString(), out action)){

@@ -28,7 +28,6 @@ namespace GezginRobotProjesi.Implementations.Map
                 Console.ResetColor();
                 Console.Write("\n");
             }
-            Console.ReadKey();
         }
 
         private void SetBackgroundColor(Block currentBlock, List<Coordinate> visitedBlocks, Coordinate robotPosition){

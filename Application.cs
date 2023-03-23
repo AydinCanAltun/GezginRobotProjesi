@@ -10,15 +10,11 @@ namespace GezginRobotProjesi
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly GameMenu _menu;
-        List<Coordinate> Visited {get; set;}
-        private readonly Maze _maze;
 
         public Application(ServiceProvider serviceProvider){
             Console.TreatControlCAsInput = true;
             _serviceProvider = serviceProvider;
             _menu = _serviceProvider.GetRequiredService<GameMenu>();
-            Visited = new List<Coordinate>();
-            _maze = new Maze();
         }
 
         public async Task GameLoop(){
@@ -71,8 +67,11 @@ namespace GezginRobotProjesi
                         player.SetIsGameOver(true);
                     }
                 }
-                wallFollower.GameMap.Draw(player.VisitedCoordinates, player.CurrentPosition);
-                Console.ReadKey();
+                if(player.GetAction() != 3)
+                {
+                    wallFollower.GameMap.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                    Console.ReadKey();
+                }
             }else{
                 _menu.ShowError(gameMap.ErrorMessage);
             }

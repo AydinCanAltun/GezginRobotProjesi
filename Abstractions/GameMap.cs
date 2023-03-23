@@ -46,11 +46,10 @@ namespace GezginRobotProjesi.Abstractions
         public bool CanMove(Coordinate position){
             int height = Playground.Count;
             int width = height > 0 ? Playground[0].Count : 0;
-            try{
-                return Playground[position.X][position.Y].IsMoveble;
-            }catch(Exception ex){
-                return false;
+            if(position.X >= 0 && position.Y >= 0){
+                return position.X < height && position.Y < width && Playground[position.X][position.Y].IsMoveble; 
             }
+            return false;
         }
 
     }

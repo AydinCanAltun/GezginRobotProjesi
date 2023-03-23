@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GezginRobotProjesi.Entity;
+using GezginRobotProjesi.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GezginRobotProjesi.Abstractions
@@ -11,38 +12,22 @@ namespace GezginRobotProjesi.Abstractions
     {
         public Coordinate CurrentPosition {get; set;}
         public List<Coordinate> VisitedCoordinates {get; set;}
-        private bool isGameOver {get; set;}
-        protected int takenAction {get; set;}
+        private int takenAction {get; set;}
+        protected List<Coordinate> VisibleBlocks {get; set;}
 
         public PlayerRobot(Coordinate startingPosition){
             CurrentPosition = startingPosition;
             VisitedCoordinates = new List<Coordinate>();
-            isGameOver = false;
             takenAction = -1;
+            VisibleBlocks = new List<Coordinate>();
         }
 
         public abstract void WaitForAction();
-        public abstract Coordinate WantsToMove();
         public abstract void ShowGameEndingMessage();
-
-        public void Move(Coordinate nextPosition, bool shouldWaitAnotherAction){
-            VisitedCoordinates.Add(CurrentPosition);
-            CurrentPosition = nextPosition;
-            if(shouldWaitAnotherAction){
-                takenAction = -1;
-            }
-        }
+        public abstract void Move();
         
         public void SetPosition(Coordinate position){
             CurrentPosition = position;
-        }
-
-        public bool ShouldFinishGame(){
-            return isGameOver;
-        }
-
-        public void SetIsGameOver(bool isGameOver){
-            this.isGameOver = isGameOver;
         }
 
         private void AddVisited(int x, int y) {
@@ -52,6 +37,25 @@ namespace GezginRobotProjesi.Abstractions
 
         public int GetAction(){
             return takenAction;
+        }
+
+        public void SetVisibleBlocks(List<Coordinate> newVisibleBlocks){
+            VisibleBlocks = newVisibleBlocks;
+        }
+
+        public void ResetAction(){
+            takenAction = -1;
+        }
+
+        protected void SetTakenAction(int action){
+            takenAction = action;
+        }
+
+        public void ValidateAction(){
+            if(takenAction != 1 && takenAction != 2 && takenAction != 3){
+                ResetAction();
+                ConsoleHelper.ClearLast2Lines();
+            }
         }
 
     }

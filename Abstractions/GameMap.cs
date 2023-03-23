@@ -38,6 +38,8 @@ namespace GezginRobotProjesi.Abstractions
         }
 
         public abstract void Draw(List<Coordinate> visited, Coordinate robotPosition);
+        public abstract void UpdateBlock(Coordinate playerPosition, bool isRobot);
+        public abstract void UpdateBlocks(List<Coordinate> blocks);
 
         public bool IsGameOver(Coordinate robotPosition){
             return EndingPosition.IsEqual(robotPosition);
@@ -50,6 +52,35 @@ namespace GezginRobotProjesi.Abstractions
                 return position.X < height && position.Y < width && Playground[position.X][position.Y].IsMoveble; 
             }
             return false;
+        }
+
+        public List<Coordinate> GetAccesiblePaths(Coordinate playerCoordinate){
+            List<Coordinate> result = new List<Coordinate>();
+            Coordinate up = new Coordinate(playerCoordinate.X - 1, playerCoordinate.Y);
+            if(CanMove(up)){
+                result.Add(up);
+            }
+            Coordinate bottom = new Coordinate(playerCoordinate.X + 1, playerCoordinate.Y);
+            if(CanMove(bottom)){
+                result.Add(bottom);
+            }
+            Coordinate left = new Coordinate(playerCoordinate.X, playerCoordinate.Y - 1);
+            if(CanMove(left)){
+                result.Add(left);
+            }
+            Coordinate right = new Coordinate(playerCoordinate.X, playerCoordinate.Y + 1);
+            if(CanMove(right)){
+                result.Add(right);
+            }
+            MakeBlocksVisible(result);
+            return result;
+        }
+
+        private void MakeBlocksVisible(List<Coordinate> visibleBlocks){
+            foreach(var block in visibleBlocks){
+                Playground[block.X][block.Y].IsVisible = true;
+            }
+            UpdateBlocks(visibleBlocks);
         }
 
     }

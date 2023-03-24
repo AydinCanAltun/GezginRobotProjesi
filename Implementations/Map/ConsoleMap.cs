@@ -81,13 +81,13 @@ namespace GezginRobotProjesi.Implementations.Map
             }
         }
 
-        public override void UpdateBlocks(List<Coordinate> blocks)
+        public override void UpdateBlocks(List<Coordinate> blocks, List<Coordinate> visitedBlocks)
         {
             CursorPoint currentPoint = new CursorPoint(Console.CursorLeft, Console.CursorTop);
-            List<Coordinate> visitedBlocks = new List<Coordinate>();
             Coordinate robotPosition = new Coordinate(-1, -1);
             foreach(Coordinate block in blocks){
                 CursorPoint targetPoint = cursorPoints[block.X][block.Y];
+                Console.SetCursorPosition(targetPoint.Left, targetPoint.Top);
                 SetBackgroundColor(Playground[block.X][block.Y], visitedBlocks, robotPosition);
                 Console.Write(string.Format(" {0} ",(int)Playground[block.X][block.Y].Type));
                 Console.ResetColor();
@@ -95,5 +95,27 @@ namespace GezginRobotProjesi.Implementations.Map
             ConsoleHelper.ClearLast2Lines(currentPoint);
         }
 
+        public override void DrawShortestPath(List<Coordinate> visited, List<Coordinate> shortestPath)
+        {
+            Console.Clear();
+            Console.ResetColor();
+            Coordinate robotPosition = EndingPosition;
+            int height = this.Playground.Count;
+            int width = height > 0 ? this.Playground[0].Count : 0;
+            Console.WriteLine(string.Format("Başlangıç Noktası: ({0},{1})", this.StartingPosition.X, this.StartingPosition.Y));
+            Console.WriteLine(string.Format("Bitiş Noktası: ({0},{1})", this.EndingPosition.X, this.EndingPosition.Y));
+            for(int i=0; i<height; i++) {
+                for(int j=0; j<width; j++) {
+                    SetBackgroundColor(this.Playground[i][j], visited, robotPosition);
+                    if(shortestPath.Any(p => p.X == i && p.Y == j)){
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                    }
+                    Console.Write(string.Format(" {0} ", ((int)this.Playground[i][j].Type)));
+                }
+                Console.ResetColor();
+                Console.Write("\n");
+            }
+            Console.Write("\n");
+        }
     }
 }

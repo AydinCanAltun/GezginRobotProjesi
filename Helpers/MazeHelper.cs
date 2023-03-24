@@ -153,5 +153,24 @@ namespace GezginRobotProjesi.Helpers
                 Console.Write('\n');
             }
         }
+
+        public static void PrintKnownMap(List<List<bool>> map){
+            int height = map.Count;
+            int width = height > 0 ? map[0].Count : 0;
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
+                    if(map[i][j]){
+                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.Write(" {0} ", 1);
+                    }else{
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.Write(" {0} ", 0);
+                    }
+                }
+                Console.ResetColor();
+                Console.Write("\n");
+            }
+        }
+
     }
 }

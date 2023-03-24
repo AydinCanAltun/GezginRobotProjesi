@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GezginRobotProjesi.Abstractions;
 using GezginRobotProjesi.Entity;
 using GezginRobotProjesi.Entity.Enums;
+using GezginRobotProjesi.Helpers;
 
 namespace GezginRobotProjesi.Implementations.Robot
 {
@@ -13,6 +14,7 @@ namespace GezginRobotProjesi.Implementations.Robot
         private readonly WallFollowerRule handRule;
         private readonly Direction[][] rightHandRule;
         private readonly Direction[][] leftHandRule;
+        
         public WallFollowerRobot(WallFollowerRule handRule, Coordinate startingPosition) : base(startingPosition) {
             this.handRule = handRule;
             rightHandRule = new Direction[][] {
@@ -32,12 +34,12 @@ namespace GezginRobotProjesi.Implementations.Robot
         public override void Move()
         {
             if (!VisitedCoordinates.Any()){
-                VisitedCoordinates.Add(CurrentPosition);
+                base.Move();
                 CurrentPosition = VisibleBlocks.First();
             }else{
                 Direction facing = GetDirection();
                 Direction[] priorities = GetPriorities(facing);
-                VisitedCoordinates.Add(CurrentPosition);
+                base.Move();
                 CurrentPosition = DecideNextMove(priorities);
             }
             VisibleBlocks = new List<Coordinate>();
@@ -131,5 +133,26 @@ namespace GezginRobotProjesi.Implementations.Robot
             return handRule[3];
         }
 
+        public override List<Coordinate> ShortestPath(){
+            Coordinate startingPosition = VisitedCoordinates.First();
+            Coordinate destination = CurrentPosition;
+            List<List<bool>> map = GetKnownMap(destination);
+            return Bfs.FindShortestRoute(map, startingPosition, destination);
+        }
+
+        private List<List<bool>> GetKnownMap(Coordinate destination){
+            List<List<bool>> map = new List<List<bool>>();
+            int height = destination.X + 1;
+            int visitedMaxDepth = VisitedCoordinates.Max(p => p.Y);
+            int width = Math.Max(destination.Y, visitedMaxDepth) + 1;
+            for(int i=0; i<height; i++){
+                List<bool> depth = new List<bool>();
+                for(int j=0; j<width; j++){
+                    depth.Add(VisitedCoordinates.Any(p => p.X == i && p.Y == j) || destination.IsEqual(i, j));
+                }
+                map.Add(depth);
+            }
+            return map;
+        }
     }
 }

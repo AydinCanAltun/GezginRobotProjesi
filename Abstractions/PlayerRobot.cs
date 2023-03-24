@@ -24,7 +24,15 @@ namespace GezginRobotProjesi.Abstractions
 
         public abstract void WaitForAction();
         public abstract void ShowGameEndingMessage();
-        public abstract void Move();
+        public virtual void Move()
+        {
+            VisitedCoordinates.Add(CurrentPosition);
+        }
+        public void Move(Coordinate newPosition) {
+            VisitedCoordinates.Add(CurrentPosition);
+            CurrentPosition = newPosition;
+        }
+        public abstract List<Coordinate> ShortestPath();
         
         public void SetPosition(Coordinate position){
             CurrentPosition = position;
@@ -57,6 +65,5 @@ namespace GezginRobotProjesi.Abstractions
                 ConsoleHelper.ClearLast2Lines();
             }
         }
-
     }
 }

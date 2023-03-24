@@ -19,5 +19,9 @@ namespace GezginRobotProjesi.Entity
             return this.X == target.X && this.Y == target.Y;
         }
 
+        public bool IsEqual(int targetX, int targetY){
+            return this.X == targetX && this.Y == targetY;
+        }
+
     }
 }

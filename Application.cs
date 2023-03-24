@@ -58,6 +58,7 @@ namespace GezginRobotProjesi
                     int playerAction = player.GetAction();
                     if(playerAction == 1){
                         List<Coordinate> availableBlocks = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
+                        gameMap.Result.UpdateBlocks(availableBlocks, player.VisitedCoordinates);
                         player.SetVisibleBlocks(availableBlocks);
                         gameMap.Result.UpdateBlock(player.CurrentPosition, false);
                         player.Move();
@@ -66,7 +67,7 @@ namespace GezginRobotProjesi
 
                     if(playerAction == 2){
                         if(isFirstMoveAfterAction2){
-                            Thread.Sleep(500);
+                            Thread.Sleep(200);
                         }
                         isFirstMoveAfterAction2 = true;
                         List<Coordinate> availableBlock = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
@@ -83,7 +84,7 @@ namespace GezginRobotProjesi
                 }
                 if(player.GetAction() != 3)
                 {
-                    gameMap.Result.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                    gameMap.Result.DrawShortestPath(player.VisitedCoordinates, player.ShortestPath());
                     Console.ReadKey();
                 }
             }else{

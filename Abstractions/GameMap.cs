@@ -38,8 +38,9 @@ namespace GezginRobotProjesi.Abstractions
         }
 
         public abstract void Draw(List<Coordinate> visited, Coordinate robotPosition);
+        public abstract void DrawShortestPath(List<Coordinate> visited, List<Coordinate> shortestPath);
         public abstract void UpdateBlock(Coordinate playerPosition, bool isRobot);
-        public abstract void UpdateBlocks(List<Coordinate> blocks);
+        public abstract void UpdateBlocks(List<Coordinate> blocks, List<Coordinate> visitedBlocks);
 
         public bool IsGameOver(Coordinate robotPosition){
             return EndingPosition.IsEqual(robotPosition);
@@ -80,7 +81,6 @@ namespace GezginRobotProjesi.Abstractions
             foreach(var block in visibleBlocks){
                 Playground[block.X][block.Y].IsVisible = true;
             }
-            UpdateBlocks(visibleBlocks);
         }
 
     }

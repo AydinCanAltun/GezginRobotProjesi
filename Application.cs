@@ -70,9 +70,9 @@ namespace GezginRobotProjesi
                             Thread.Sleep(200);
                         }
                         isFirstMoveAfterAction2 = true;
-                        List<Coordinate> availableBlock = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
+                        List<Coordinate> availableBlocks = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
                         gameMap.Result.UpdateBlocks(availableBlocks, player.VisitedCoordinates);
-                        player.SetVisibleBlocks(availableBlock);
+                        player.SetVisibleBlocks(availableBlocks);
                         gameMap.Result.UpdateBlock(player.CurrentPosition, false);
                         player.Move();
                     }

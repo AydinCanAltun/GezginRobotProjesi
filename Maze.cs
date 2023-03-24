@@ -32,9 +32,9 @@ namespace GezginRobotProjesi {
         /// <returns></returns>
         public Response<List<List<Block>>> CreateMap(int height, int width) {
             Response<List<List<Block>>> map = new Response<List<List<Block>>>();
-            if((width < Constant.MinimumSize.Width && width > Constant.MaximumSize.Width) || (height < Constant.MinimumSize.Height && height > Constant.MaximumSize.Height) ) {
+            if(width < Constant.MinimumSize.Width || width > Constant.MaximumSize.Width || height < Constant.MinimumSize.Height || height > Constant.MaximumSize.Height ) {
                 map.IsSuccess = false;
-                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği {3}-{4}} arasında olmadılıdır! Verilen Genişlik: {0}, Verilen Yükseklik {1}", width, height, Constant.MinimumSize.Width, Constant.MaximumSize.Width);
+                map.ErrorMessage = string.Format("Haritanın Genişliği veya Yüksekliği {0}-{1} arasında olmadılıdır! Verilen Genişlik: {2}, Verilen Yükseklik {3}", Constant.MinimumSize.Width, Constant.MaximumSize.Width, width, height);
                 return map;
             }
             map.IsSuccess = true;

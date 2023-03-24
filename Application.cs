@@ -71,6 +71,7 @@ namespace GezginRobotProjesi
                         }
                         isFirstMoveAfterAction2 = true;
                         List<Coordinate> availableBlock = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
+                        gameMap.Result.UpdateBlocks(availableBlocks, player.VisitedCoordinates);
                         player.SetVisibleBlocks(availableBlock);
                         gameMap.Result.UpdateBlock(player.CurrentPosition, false);
                         player.Move();

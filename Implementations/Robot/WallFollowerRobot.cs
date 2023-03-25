@@ -158,9 +158,7 @@ namespace GezginRobotProjesi.Implementations.Robot
         public override void ValidateAction()
         {
             base.ValidateAction();
-            if(GetAction() != -1){
-                ClearAction();
-            }
+            ClearAction();
         }
 
         private void ClearAction()

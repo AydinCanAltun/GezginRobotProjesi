@@ -59,10 +59,9 @@ namespace GezginRobotProjesi.Abstractions
             takenAction = action;
         }
 
-        public void ValidateAction(){
+        public virtual void ValidateAction(){
             if(takenAction != 1 && takenAction != 2 && takenAction != 3){
                 ResetAction();
-                ConsoleHelper.ClearLast2Lines();
             }
         }
     }

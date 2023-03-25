@@ -92,7 +92,7 @@ namespace GezginRobotProjesi.Implementations.Map
                 Console.Write(string.Format(" {0} ",(int)Playground[block.X][block.Y].Type));
                 Console.ResetColor();
             }
-            ConsoleHelper.ClearLast2Lines(currentPoint);
+            Console.SetCursorPosition(currentPoint.Left, currentPoint.Top);
         }
 
         public override void DrawShortestPath(List<Coordinate> visited, List<Coordinate> shortestPath)

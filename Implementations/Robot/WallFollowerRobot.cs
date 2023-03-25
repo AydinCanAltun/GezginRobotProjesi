@@ -154,5 +154,18 @@ namespace GezginRobotProjesi.Implementations.Robot
             }
             return map;
         }
+
+        public override void ValidateAction()
+        {
+            base.ValidateAction();
+            if(GetAction() != -1){
+                ClearAction();
+            }
+        }
+
+        private void ClearAction()
+        {
+            ConsoleHelper.ClearLast2Lines();
+        }
     }
 }

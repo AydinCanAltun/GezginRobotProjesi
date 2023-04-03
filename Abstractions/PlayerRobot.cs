@@ -12,17 +12,14 @@ namespace GezginRobotProjesi.Abstractions
     {
         public Coordinate CurrentPosition {get; set;}
         public List<Coordinate> VisitedCoordinates {get; set;}
-        private int takenAction {get; set;}
         protected List<Coordinate> VisibleBlocks {get; set;}
 
         public PlayerRobot(Coordinate startingPosition){
             CurrentPosition = startingPosition;
             VisitedCoordinates = new List<Coordinate>();
-            takenAction = -1;
             VisibleBlocks = new List<Coordinate>();
         }
 
-        public abstract void WaitForAction();
         public abstract void ShowGameEndingMessage();
         public virtual void Move()
         {
@@ -43,26 +40,9 @@ namespace GezginRobotProjesi.Abstractions
             VisitedCoordinates.Add(coordinate);
         }
 
-        public int GetAction(){
-            return takenAction;
-        }
-
         public void SetVisibleBlocks(List<Coordinate> newVisibleBlocks){
             VisibleBlocks = newVisibleBlocks;
         }
 
-        public void ResetAction(){
-            takenAction = -1;
-        }
-
-        protected void SetTakenAction(int action){
-            takenAction = action;
-        }
-
-        public virtual void ValidateAction(){
-            if(takenAction != 1 && takenAction != 2 && takenAction != 3){
-                ResetAction();
-            }
-        }
     }
 }

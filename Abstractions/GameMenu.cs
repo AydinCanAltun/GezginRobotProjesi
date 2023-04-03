@@ -13,6 +13,7 @@ namespace GezginRobotProjesi.Abstractions
         protected abstract void TakeAction();
         public abstract Response<MapSize> AskMapSize();
         public abstract void ShowError(string errorMessage);
+        public abstract void ShowMessage(string message);
         private Maze _maze;
 
         public GameMenu(){

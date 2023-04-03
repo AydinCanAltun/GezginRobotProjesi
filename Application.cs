@@ -4,6 +4,9 @@ using GezginRobotProjesi.Entity.Enums;
 using GezginRobotProjesi.Helpers;
 using GezginRobotProjesi.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using prolab21.Abstractions;
+using prolab21.Entity.Enums;
+using prolab21.Implementations.ActionHandler;
 
 namespace GezginRobotProjesi
 {
@@ -23,7 +26,7 @@ namespace GezginRobotProjesi
             while (true) {
                 _menu.Draw();
                 if(_menu.GetTakenAction() == 0){
-                    Console.WriteLine("Bay bay");
+                    _menu.ShowMessage("Bay bay");
                     break;
                 }
                 if(_menu.GetTakenAction() == 1){
@@ -50,22 +53,23 @@ namespace GezginRobotProjesi
                 bool isFirstMoveAfterAction2 = false;
                 PlayerRobot player = _serviceProvider.GetRequiredService<IPlayerRobotFactory>().CreateInstance(problemType, gameMap.Result.StartingPosition);
                 gameMap.Result.Draw(player.VisitedCoordinates, player.CurrentPosition);
+                PlayerActionHandler actionHandler = _serviceProvider.GetRequiredService<PlayerActionHandler>();
                 while(!isGameOver){
-                    while(player.GetAction() == -1){
-                        player.WaitForAction();
-                        player.ValidateAction();
+                    while(actionHandler.GetPlayerAction() == PlayerAction.Nothing)
+                    {
+                        actionHandler.AskForAction();
                     }
-                    int playerAction = player.GetAction();
-                    if(playerAction == 1){
+                    PlayerAction playerAction = actionHandler.GetPlayerAction();
+                    if(playerAction == PlayerAction.Move){
                         List<Coordinate> availableBlocks = gameMap.Result.GetAccesiblePaths(player.CurrentPosition);
                         gameMap.Result.UpdateBlocks(availableBlocks, player.VisitedCoordinates);
                         player.SetVisibleBlocks(availableBlocks);
                         gameMap.Result.UpdateBlock(player.CurrentPosition, false);
                         player.Move();
-                        player.ResetAction();
+                        actionHandler.ResetAction();
                     }
 
-                    if(playerAction == 2){
+                    if(playerAction == PlayerAction.MoveToEnd){
                         if(isFirstMoveAfterAction2){
                             Thread.Sleep(200);
                         }
@@ -78,15 +82,15 @@ namespace GezginRobotProjesi
                     }
                     gameMap.Result.UpdateBlock(player.CurrentPosition, true);
                     IsGameOver(gameMap.Result.EndingPosition, player.CurrentPosition);
-                    if(playerAction == 3) {
+                    if(playerAction == PlayerAction.Quit) {
                         player.ShowGameEndingMessage();
                         isGameOver = true;
                     }
                 }
-                if(player.GetAction() != 3)
+                if(actionHandler.GetPlayerAction() != PlayerAction.Quit)
                 {
                     gameMap.Result.DrawShortestPath(player.VisitedCoordinates, player.ShortestPath());
-                    Console.ReadKey();
+                    actionHandler.WaitForInput();
                 }
             }else{
                 _menu.ShowError(gameMap.ErrorMessage);

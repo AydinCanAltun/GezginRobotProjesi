@@ -100,5 +100,10 @@ namespace GezginRobotProjesi.Implementations.Menu
         {
             this.errorMessage = errorMessage;
         }
+
+        public override void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }

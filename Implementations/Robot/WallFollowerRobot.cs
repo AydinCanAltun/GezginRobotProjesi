@@ -51,24 +51,6 @@ namespace GezginRobotProjesi.Implementations.Robot
             Console.WriteLine("Oyun sonlandırılıyor...");
         }
 
-        public override void WaitForAction()
-        {
-            try{
-                Console.Write("1) Bir adım ilerle, 2) Sonuna kadar git, 3) Oyunu Sonlandır");
-                ConsoleKeyInfo input = Console.ReadKey();
-                int action;
-                if(char.IsDigit(input.KeyChar) && int.TryParse(input.KeyChar.ToString(), out action)){
-                    SetTakenAction(action);
-                }else{
-                    Console.Write("Hatalı giriş yaptınız! Lütfen tekrar deneyiniz!");
-                    ResetAction();
-                } 
-            }catch(Exception ex){
-                Console.Write(string.Format("Hatalı giriş yaptınız! Lütfen tekrar deneyiniz!"));
-                ResetAction();
-            }
-        }
-
         private Direction GetDirection(){
             Coordinate previousPosition = VisitedCoordinates.Last();
             int deltaHeight = CurrentPosition.X - previousPosition.X;
@@ -155,15 +137,5 @@ namespace GezginRobotProjesi.Implementations.Robot
             return map;
         }
 
-        public override void ValidateAction()
-        {
-            base.ValidateAction();
-            ClearAction();
-        }
-
-        private void ClearAction()
-        {
-            ConsoleHelper.ClearLast2Lines();
-        }
     }
 }
